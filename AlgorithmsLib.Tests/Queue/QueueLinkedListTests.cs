@@ -18,7 +18,7 @@ namespace AlgorithmsLib.Tests.Queue
         }
 
         [Test]
-        public void SHOULD_be_empty_WHEN_same_number_of_enqueues_and_dequeues_are_called()
+        public void SHOULD_be_empty_WHEN_same_number_of_enqueues_and_dequeues_is_called()
         {
             var queue = new QueueLinkedList<int>();
 
