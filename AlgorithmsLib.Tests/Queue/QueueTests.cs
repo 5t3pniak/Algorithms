@@ -5,22 +5,23 @@ using NUnit.Framework;
 
 namespace AlgorithmsLib.Tests.Queue
 {
-    [TestFixture]
-    public class QueueLinkedListTests
+    public abstract class QueueTests
     {
+        protected abstract IQueue<int> GetQueue();
+
         [Test]
         public void SHOULD_be_empty_on_init()
         {
-            var queue = new QueueLinkedList<int>();
+            var queue = GetQueue();
 
             Assert.IsTrue(queue.IsEmpty);
-            Assert.AreEqual(0,queue.Count);
+            Assert.AreEqual(0, queue.Count);
         }
 
         [Test]
         public void SHOULD_be_empty_WHEN_same_number_of_enqueues_and_dequeues_is_called()
         {
-            var queue = new QueueLinkedList<int>();
+            var queue = GetQueue();
 
             queue.Enqueue(1);
             queue.Enqueue(2);
@@ -34,7 +35,7 @@ namespace AlgorithmsLib.Tests.Queue
         [Test]
         public void SHOULD_work_in_fifo_order()
         {
-            var queue = new QueueLinkedList<int>();
+            var queue = GetQueue();
 
             queue.Enqueue(1);
             queue.Enqueue(2);
@@ -42,7 +43,26 @@ namespace AlgorithmsLib.Tests.Queue
             var dequeued1 = queue.Dequeue();
             var dequeued2 = queue.Dequeue();
             var dequeued3 = queue.Dequeue();
-            
+
+            Assert.AreEqual(1, dequeued1);
+            Assert.AreEqual(2, dequeued2);
+            Assert.AreEqual(3, dequeued3);
+        }
+
+        [Test]
+        public void SHOULD_work_in_fifo_order1()
+        {
+            var queue = GetQueue();
+
+            queue.Enqueue(1);
+            var dequeued1 = queue.Dequeue();
+            queue.Enqueue(2);
+            var dequeued2 = queue.Dequeue();
+            queue.Enqueue(3);
+            var dequeued3 = queue.Dequeue();
+            queue.Enqueue(4);
+            queue.Enqueue(5);
+
             Assert.AreEqual(1, dequeued1);
             Assert.AreEqual(2, dequeued2);
             Assert.AreEqual(3, dequeued3);
@@ -51,7 +71,7 @@ namespace AlgorithmsLib.Tests.Queue
         [Test]
         public void SHOULD_throw_invalid_operation_WHEN_queue_is_empty_and_dequeued_is_called()
         {
-            var queue = new QueueLinkedList<int>();
+            var queue = GetQueue();
 
             Assert.Throws<InvalidOperationException>(() => queue.Dequeue());
             Assert.AreEqual(0, queue.Count);
@@ -62,7 +82,7 @@ namespace AlgorithmsLib.Tests.Queue
         public void SHOULD_not_iterate_WHEN_queue_is_empty()
         {
             var list = Enumerable.Empty<int>().ToList();
-            var queue = new QueueLinkedList<int>();
+            var queue = GetQueue();
 
             foreach (var item in queue)
                 list.Add(item);
@@ -76,7 +96,7 @@ namespace AlgorithmsLib.Tests.Queue
         public void SHOULD_iterate_from_head_to_tail_WHEN_queue_is_not_empty()
         {
             var list = Enumerable.Empty<int>().ToList();
-            var queue = new QueueLinkedList<int>();
+            var queue = GetQueue();
             queue.Enqueue(1);
             queue.Enqueue(2);
             queue.Enqueue(3);
@@ -90,5 +110,16 @@ namespace AlgorithmsLib.Tests.Queue
             Assert.AreEqual(3, list[2]);
             Assert.AreEqual(4, list[3]);
         }
+    }
+
+
+    public class QueueArrayBasedTests : QueueTests
+    {
+        protected override IQueue<int> GetQueue() => new ArrayBasedQueue<int>();
+    }
+
+    public class QueueLinkedListTests : QueueTests
+    {
+        protected override IQueue<int> GetQueue() => new QueueLinkedList<int>();
     }
 }
