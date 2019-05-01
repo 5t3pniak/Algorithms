@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using AlgorithmsLib.Queue;
+using FsCheck;
 using NUnit.Framework;
 
 namespace AlgorithmsLib.Tests.Queue
@@ -37,16 +38,18 @@ namespace AlgorithmsLib.Tests.Queue
         {
             var queue = GetQueue();
 
-            queue.Enqueue(1);
-            queue.Enqueue(2);
-            queue.Enqueue(3);
-            var dequeued1 = queue.Dequeue();
-            var dequeued2 = queue.Dequeue();
-            var dequeued3 = queue.Dequeue();
+            void EnqueueAll(int[] items)
+            {
+                foreach (var item in items) queue.Enqueue(item);
+            }
 
-            Assert.AreEqual(1, dequeued1);
-            Assert.AreEqual(2, dequeued2);
-            Assert.AreEqual(3, dequeued3);
+            int[] DequeueAll(int n) => Enumerable.Range(1, n).Select(_ => queue.Dequeue()).ToArray();
+
+            Prop.ForAll<int[]>(testCaseCollection =>
+            {
+                EnqueueAll(testCaseCollection);
+                return testCaseCollection.SequenceEqual(DequeueAll(testCaseCollection.Length));
+            }).QuickCheckThrowOnFailure();
         }
 
         [Test]
