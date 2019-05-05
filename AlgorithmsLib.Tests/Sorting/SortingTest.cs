@@ -1,17 +1,22 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using AlgorithmsLib.Sorting;
 using NUnit.Framework;
+using static Algorithms.Utils;
 
 namespace AlgorithmsLib.Tests.Sorting
 {
-    public class SortingTest
+    public abstract class SortingTest
     {
+        protected  abstract SortingMethod<int> SortingMethod { get; }
+
+
         [Test]
         public void Should_sort_descending_order()
         {
             var descending = new[] { 5, 4, 3, 2, 1 };
 
-            SelectionSort.Sort(descending);
+            SortingMethod(descending);
 
             Assert.That(descending, expression: Is.Ordered.Ascending);
         }
@@ -21,7 +26,7 @@ namespace AlgorithmsLib.Tests.Sorting
         {
             var empty = new List<int>();
 
-            SelectionSort.Sort(empty);
+            SortingMethod(empty);
 
             Assert.That(empty, expression: Is.Empty);
         }
@@ -31,9 +36,20 @@ namespace AlgorithmsLib.Tests.Sorting
         {
             var one = new List<int>() { 1 };
 
-            SelectionSort.Sort(one);
+            SortingMethod(one);
 
             Assert.That(one, Is.EquivalentTo(expected: new List<int> { 1 }));
         }
+    }
+
+
+    public class SelectionSortTests : SortingTest
+    {
+        protected override SortingMethod<int> SortingMethod => SelectionSort.Sort;
+    }
+
+    public class InsertionSortTests : SortingTest
+    {
+        protected override SortingMethod<int> SortingMethod => InsertionSort.Sort;
     }
 }

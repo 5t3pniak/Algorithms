@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using AlgorithmsLib.Queue;
 
-namespace Algorithms.utils
+namespace Algorithms
 {
     public static class Utils
     {
@@ -16,5 +17,7 @@ namespace Algorithms.utils
         }
 
         public delegate IQueue<TItem> QueueProvider<TItem>();
+
+        public delegate IList<TItem> SortingMethod<TItem>(IList<TItem> indexedCollection);
     }
 }

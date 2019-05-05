@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using static Algorithms.utils.Utils;
+using static Algorithms.Utils;
 
 namespace Algorithms.TestCases
 {
