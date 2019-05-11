@@ -8,13 +8,13 @@ namespace AlgorithmsLib.Tests.Sorting
 {
     public abstract class SortingTest
     {
-        protected  abstract SortingMethod<int> SortingMethod { get; }
+        protected abstract SortingMethod<int> SortingMethod { get; }
 
 
         [Test]
         public void Should_sort_descending_order()
         {
-            var descending = new[] { 5, 4, 3, 2, 1 };
+            var descending = new[] {12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, -1, -2};
 
             SortingMethod(descending);
 
@@ -34,11 +34,11 @@ namespace AlgorithmsLib.Tests.Sorting
         [Test]
         public void Should_do_nothing_When_collection_has_1_item()
         {
-            var one = new List<int>() { 1 };
+            var one = new List<int>() {1};
 
             SortingMethod(one);
 
-            Assert.That(one, Is.EquivalentTo(expected: new List<int> { 1 }));
+            Assert.That(one, Is.EquivalentTo(expected: new List<int> {1}));
         }
     }
 
@@ -51,5 +51,10 @@ namespace AlgorithmsLib.Tests.Sorting
     public class InsertionSortTests : SortingTest
     {
         protected override SortingMethod<int> SortingMethod => InsertionSort.Sort;
+    }
+
+    public class ShellSortTests : SortingTest
+    {
+        protected override SortingMethod<int> SortingMethod => ShellSort.Sort;
     }
 }

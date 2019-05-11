@@ -34,6 +34,12 @@ namespace Algorithms
                 SortingCases.RunSortDescendingArray,
                 (InsertionSort.Sort, Enumerable.Range(1, Iterations).OrderByDescending(x => x).ToArray()));
             Console.WriteLine($"Time Elapsed: {probeForInsertionSort.Elapsed}");
+
+            Console.WriteLine("Test For Sorting ShellSort: ");
+            var probeForShellSort = Measure<(SortingMethod<int>, int[])>(
+                SortingCases.RunSortDescendingArray,
+                (ShellSort.Sort, Enumerable.Range(1, Iterations).OrderByDescending(x => x).ToArray()));
+            Console.WriteLine($"Time Elapsed: {probeForShellSort.Elapsed}");
         }
 
         private static void CheckQueues()
